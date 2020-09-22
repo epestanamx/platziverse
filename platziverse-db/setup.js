@@ -26,8 +26,8 @@ async function setup () {
     host: process.env.DB_HOST || 'localhost',
     dialect: 'postgres',
     logging: (s) => debug(s),
-    setup: true,
-  };
+    setup: true
+  }
 
   await db(config).catch(handleFatalError)
 

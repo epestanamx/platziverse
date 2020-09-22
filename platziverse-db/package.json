@@ -4,6 +4,7 @@
   "description": "A simple IoT platform - DB Module",
   "main": "index.js",
   "scripts": {
+    "test": "DBUG=platziverse:* ava tests/* --verbose",
     "setup": "DEBUG=platziverse:* node setup.js",
     "lint": "standard",
     "lint:fix": "standard --fix"
@@ -19,14 +20,17 @@
   },
   "homepage": "https://github.com/epestanamx/platziverse#readme",
   "devDependencies": {
+    "ava": "^3.12.1",
     "standard": "^14.3.4"
   },
   "dependencies": {
     "chalk": "^4.1.0",
     "debug": "^4.2.0",
+    "defaults": "^1.0.3",
     "inquirer": "^7.3.3",
     "pg": "^8.3.3",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
   }
 }
