@@ -43,7 +43,7 @@ server.on('clientDisconnected', async client => {
     agent.connected = false
 
     try {
-      await Agent.createOrUpdate(agent.uuid, agent)
+      await Agent.createOrUpdate(agent)
     } catch (e) {
       return handleError(e)
     }

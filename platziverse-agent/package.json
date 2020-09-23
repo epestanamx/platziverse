@@ -1,0 +1,30 @@
+{
+  "name": "platziverse-agent",
+  "version": "1.0.0",
+  "description": "A Simple IoT Platform - Agent",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epestanamx/platziverse.git"
+  },
+  "author": "Ernesto Pestaña <epestanamx@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epestanamx/platziverse/issues"
+  },
+  "homepage": "https://github.com/epestanamx/platziverse#readme",
+  "devDependencies": {
+    "standard": "^14.3.4"
+  },
+  "dependencies": {
+    "debug": "^4.2.0",
+    "defaults": "^1.0.3",
+    "mqtt": "^4.2.1",
+    "platziverse-utils": "file:../platziverse-utils",
+    "uuid": "^8.3.0"
+  }
+}
