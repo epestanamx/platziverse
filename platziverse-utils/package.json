@@ -1,12 +1,9 @@
 {
-  "name": "platziverse-mqtt",
+  "name": "platziverse-utils",
   "version": "1.0.0",
-  "private": true,
-  "description": "A Simple IoT Platform - MQTT Server",
-  "main": "server.js",
+  "description": "A simple utils for platziverse",
+  "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node server.js",
-    "start-dev": "DEBUG=platziverse:* nodemon server.js",
     "lint": "standard",
     "lint:fix": "standard --fix"
   },
@@ -21,15 +18,10 @@
   },
   "homepage": "https://github.com/epestanamx/platziverse#readme",
   "devDependencies": {
-    "nodemon": "^2.0.4",
     "standard": "^14.3.4"
   },
   "dependencies": {
     "chalk": "^4.1.0",
-    "debug": "^4.2.0",
-    "mosca": "^2.8.3",
-    "platziverse-db": "file:../platziverse-db",
-    "platziverse-utils": "file:../platziverse-utils",
-    "redis": "^3.0.2"
+    "debug": "^4.2.0"
   }
 }

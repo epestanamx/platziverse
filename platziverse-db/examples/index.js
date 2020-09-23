@@ -26,18 +26,18 @@ async function run () {
   console.log(agent)
 
   const agents = await Agent.findAll().catch(handleFatalError)
-  console.log('-- agents --');
-  console.log(agents);
+  console.log('-- agents --')
+  console.log(agents)
 
-  const metric = await Metric.create(agent.uuid, { type: 'memory', value: 300 })
-  
+  await Metric.create(agent.uuid, { type: 'memory', value: 300 })
+
   const metrics = await Metric.findByAgentUuid(agent.uuid)
-  console.log('-- metrics --');
-  console.log(metrics);
+  console.log('-- metrics --')
+  console.log(metrics)
 
   const metricsByType = await Metric.findByTypeAgentUuid('memory', agent.uuid)
-  console.log('-- metrics --');
-  console.log(metricsByType);
+  console.log('-- metrics --')
+  console.log(metricsByType)
 }
 
 function handleFatalError (err) {
