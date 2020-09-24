@@ -1,9 +1,11 @@
 const debug = require('debug')('platziverse:api:routes')
 const express = require('express')
+const auth = require('express-jwt')
+const config = require('./config')
 
 const api = express.Router()
 
-api.get('/agents', async (req, res) => {
+api.get('/agents', auth(config.auth), async (req, res, next) => {
   debug('A request has come to /agents')
   try {
     const agents = await req.models.Agent.findConnected()
@@ -31,36 +33,36 @@ api.get('/agents/:uuid', async (req, res, next) => {
 })
 
 api.get('/metrics/:uuid', async (req, res, next) => {
-  debug('A request has come to /metrics/:uuid');
+  debug('A request has come to /metrics/:uuid')
   const { uuid } = req.params
 
   try {
     const metrics = await req.models.Metric.findByAgentUuid(uuid)
 
     if (!metrics || metrics.length === 0) {
-      return next(new Error(`Metrics not found for agent with uuid ${uuid}`));
+      return next(new Error(`Metrics not found for agent with uuid ${uuid}`))
     }
 
-    res.send(metrics);
+    res.send(metrics)
   } catch (e) {
     return next(e)
   }
 })
 
 api.get('/metrics/:uuid/:type', async (req, res, next) => {
-  debug('A request has come to /metrics/:uuid/:type');
+  debug('A request has come to /metrics/:uuid/:type')
   const { uuid, type } = req.params
 
   try {
-    const metrics = await req.models.Metric.findByTypeAgentUuid(type, uuid);
+    const metrics = await req.models.Metric.findByTypeAgentUuid(type, uuid)
 
     if (!metrics || metrics.length === 0) {
-      return next(new Error(`Metrics not found for agent with uuid ${uuid} and type ${type}`));
+      return next(new Error(`Metrics not found for agent with uuid ${uuid} and type ${type}`))
     }
 
-    res.send(metrics);
+    res.send(metrics)
   } catch (e) {
-    return next(e);
+    return next(e)
   }
 })
 

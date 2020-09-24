@@ -2,3 +2,4 @@
 
 ## Todo's
 - [ ] Tests
+- [ ] JWT

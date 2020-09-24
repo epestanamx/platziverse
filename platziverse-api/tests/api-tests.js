@@ -3,16 +3,21 @@ const test = require('ava')
 const request = require('supertest')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
+const { promisify } = require('util')
 
+const { auth: { secret } } = require('../config')
 const agentFixtures = require('./fixtures/agent')
+const auth = require('../auth')
+const sign = promisify(auth.sign)
 
 let sandbox
 let server
 let dbStub
-let AgentStub = {}
-let MetricStub = {}
+let token
+const AgentStub = {}
+const MetricStub = {}
 
-test.beforeEach(() => {
+test.beforeEach(async () => {
   sandbox = sinon.createSandbox()
 
   AgentStub.findConnected = sandbox.stub()
@@ -24,6 +29,8 @@ test.beforeEach(() => {
     Metric: MetricStub
   })
 
+  token = await sign({ admin: true, username: 'platzi' }, secret)
+
   server = proxyquire('../server', {
     'platziverse-db': dbStub
   })
@@ -33,18 +40,10 @@ test.afterEach(() => {
   sandbox && sinon.restore()
 })
 
-// test.serial.cb('/api/agents', t => {
-//   request(server)
-//     .get('/api/agents')
-//     .expect(200)
-//     .expect('Content-Type', /js/)
-//     .end((err, res) => {
-//       t.end()
-//     })
-// })
 test.serial('/api/agents', async t => {
   const res = await request(server)
     .get('/api/agents')
+    .set('Authorization', `Bearer ${token}`)
 
   t.regex(res.headers['content-type'], /json/, 'response Content Type should be json type')
   t.deepEqual(res.statusCode, 200, 'response status code should be 200')

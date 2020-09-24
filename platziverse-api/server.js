@@ -4,7 +4,7 @@ const chalk = require('chalk')
 const http = require('http')
 const express = require('express')
 const { configDb, handleFatalError } = require('platziverse-utils')
-const db = require('platziverse-db');
+const db = require('platziverse-db')
 
 let services
 
@@ -40,6 +40,12 @@ app.use((err, req, res, next) => {
   if (err.message.match(/not found/)) {
     return res.status(404).send({ error: err.message })
   }
+
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).send({ error: err.message })
+  }
+
+  res.status(500).send({ error: err.message })
 })
 
 const server = http.createServer(app)
