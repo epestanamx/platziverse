@@ -7,8 +7,6 @@ const { configDb, handleFatalError } = require('platziverse-utils')
 const db = require('platziverse-db');
 
 let services
-let Agent
-let Metric
 
 const api = require('./api')
 
@@ -19,13 +17,16 @@ app.use('*', async (req, res, next) => {
   if (!services) {
     try {
       services = await db(configDb('platziverse:api:db'))
-      Agent = services.Agent
-      Metric = services.Metric
 
       debug('Connected to database')
     } catch (e) {
       return next(e)
     }
+  }
+
+  req.models = {
+    Agent: services.Agent,
+    Metric: services.Metric
   }
 
   next()
