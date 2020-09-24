@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platziverse</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Platziverse</h1>
+  <script type="text/javascript">
+    const socket = io()
+
+    socket.on('agent/connected', (payload) => {
+      console.log('agent/connected')
+      console.log(payload)
+    })
+
+    socket.on('agent/message', (payload) => {
+      console.log('agent/message')
+      console.log(payload)
+    })
+
+    socket.on('agent/disconnected', (payload) => {
+      console.log('agent/disconnected')
+      console.log(payload)
+    })
+  </script>
+</body>
+</html>
