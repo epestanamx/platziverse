@@ -8,6 +8,8 @@ const chalk = require('chalk')
 const { handleFatalError } = require('platziverse-utils')
 const PlatziverseAgent = require('platziverse-agent')
 
+const proxy = require('./proxy')
+
 const port = process.env.PORT || 8080
 const app = express()
 const server = http.createServer(app)
@@ -17,18 +19,6 @@ const agent = new PlatziverseAgent()
 // Socke.io
 io.on('connect', socket => {
   debug(`Connected ${socket.id}`)
-
-  // agent.on('agent/connected', payload => {
-  //   socket.emit('agent/connected', payload)
-  // })
-
-  // agent.on('agent/message', payload => {
-  //   socket.emit('agent/message', payload)
-  // })
-
-  // agent.on('agent/disconnected', payload => {
-  //   socket.emit('agent/disconnected', payload)
-  // })
 
   pipe(agent, socket)
 })
@@ -48,6 +38,22 @@ function pipe (source, target) {
 }
 
 app.use(express.static(path.join(__dirname, 'public')))
+
+app.use('/', proxy)
+
+app.use((err, req, res, next) => {
+  debug(`Error: ${err.message}`)
+
+  if (err.message.match(/not found/)) {
+    return res.status(404).send({ error: err.message })
+  }
+
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).send({ error: err.message })
+  }
+
+  res.status(500).send({ error: err.message })
+})
 
 process.on('uncaughtException', handleFatalError)
 process.on('unhandledRejection', handleFatalError)
