@@ -29,7 +29,7 @@ test.beforeEach(async () => {
     Metric: MetricStub
   })
 
-  token = await sign({ admin: true, username: 'platzi' }, secret)
+  token = await sign({ admin: true, username: 'platzi', 'permissions': [ 'metrics:read' ] }, secret)
 
   server = proxyquire('../server', {
     'platziverse-db': dbStub

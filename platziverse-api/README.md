@@ -2,4 +2,5 @@
 
 ## Todo's
 - [ ] Tests
-- [ ] JWT
+- [ ] Authorization
+- [ ] Permissions
