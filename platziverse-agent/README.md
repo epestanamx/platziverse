@@ -1,3 +1,5 @@
+# platziverse-agent
+
 ## Usage
 
 ```js
