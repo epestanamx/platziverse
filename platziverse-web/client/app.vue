@@ -6,7 +6,6 @@
       :socket="socket"
       :key="agent.uuid">
     </agent>
-    </agent>
     <p v-if="error">{{error}}</p>
   </div>
 </template>
@@ -49,9 +48,19 @@ module.exports = {
         const agents = await request(options)
         this.agents = agents
 
+        this.startRealtime()
       } catch (e) {
         this.error = e.error.error
       }
+    },
+    startRealtime () {
+      socket.on('agent/connected', payload => {
+        const existing = this.agents.find(a => a.uuid === uuid)
+
+        if (!existing) {
+          this.agents.push(payload.agent)
+        }
+      })
     }
   }
 }

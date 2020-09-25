@@ -63,9 +63,24 @@ module.exports = {
         var metrics = await request(options);
 
         this.metrics = metrics;
+
+        this.startRealtime();
       } catch (e) {
         this.error = e.error.error;
       }
+    },
+    startRealtime: function startRealtime() {
+      var _this = this;
+
+      var uuid = this.uuid,
+          socket = this.socket;
+
+
+      socket.on('agent/disconnected', function (payload) {
+        if (payload.uuid = uuid) {
+          _this.connected = false;
+        }
+      });
     },
     toggleMetrics: function toggleMetrics() {
       this.showMetrics = this.showMetrics ? false : true;
@@ -141,9 +156,19 @@ module.exports = {
       try {
         var agents = await request(options);
         this.agents = agents;
+
+        this.startRealtime();
       } catch (e) {
         this.error = e.error.error;
       }
+    },
+    startRealtime: function startRealtime() {
+      var _this = this;
+
+      socket.on('agent/connected', function (payload) {
+        console.log(payload);
+        _this.agents.push(payload.agent);
+      });
     }
   }
 };
