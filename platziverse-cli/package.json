@@ -1,0 +1,30 @@
+{
+  "name": "platziverse-cli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Simple IoT Platform - CLI",
+  "bin": "platziverse.js",
+  "scripts": {
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epestanamx/platziverse.git"
+  },
+  "author": "Ernesto Pestaña <epestanamx@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epestanamx/platziverse/issues"
+  },
+  "homepage": "https://github.com/epestanamx/platziverse#readme",
+  "devDependencies": {
+    "standard": "^14.3.4"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.20",
+    "moment": "^2.29.0",
+    "platziverse-agent": "file:../platziverse-agent"
+  }
+}
