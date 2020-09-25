@@ -1,6 +1,7 @@
 {
   "name": "platziverse-db",
   "version": "1.0.0",
+  "private": true,
   "description": "A simple IoT platform - DB Module",
   "main": "index.js",
   "scripts": {

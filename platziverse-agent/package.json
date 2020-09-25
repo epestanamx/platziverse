@@ -1,6 +1,7 @@
 {
   "name": "platziverse-agent",
   "version": "1.0.0",
+  "private": true,
   "description": "A Simple IoT Platform - Agent",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,7 @@
 {
   "name": "platziverse-web",
   "version": "1.0.0",
+  "private": true,
   "description": "A Simple IoT Platform - Web",
   "main": "server.js",
   "scripts": {
