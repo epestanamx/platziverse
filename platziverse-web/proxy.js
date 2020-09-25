@@ -24,15 +24,39 @@ api.get('/agents', async (req, res, next) => {
 })
 
 api.get('/agents/:uuid', async (req, res, next) => {
+  const { uuid } = req.params
 
+  try {
+    const result = await request({ ...options, url: `${endpoint}/api/agents/${uuid}` })
+
+    return res.send(result)
+  } catch (e) {
+    return next(e)
+  }
 })
 
 api.get('/metrics/:uuid', async (req, res, next) => {
+  const { uuid } = req.params
 
+  try {
+    const result = await request({ ...options, url: `${endpoint}/api/metrics/${uuid}` })
+
+    return res.send(result)
+  } catch (e) {
+    return next(e)
+  }
 })
 
 api.get('/metrics/:uuid/:type', async (req, res, next) => {
+  const { uuid, type } = req.params
 
+  try {
+    const result = await request({ ...options, url: `${endpoint}/api/metrics/${uuid}/${type}` })
+
+    return res.send(result)
+  } catch (e) {
+    return next(e)
+  }
 })
 
 module.exports = api

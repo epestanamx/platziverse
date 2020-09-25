@@ -24,6 +24,9 @@
   }
 </style>
 <script>
+const request = require('request-promise-native')
+const moment = require('moment')
+const randomColor = require('random-material-color')
 const LineChart = require('./line-chart')
 
 module.exports = {
@@ -31,7 +34,7 @@ module.exports = {
   components: {
     LineChart
   },
-  props: [ 'uuid', 'type' ],
+  props: [ 'uuid', 'type', 'socket' ],
 
   data() {
     return {
@@ -46,9 +49,77 @@ module.exports = {
   },
 
   methods: {
-    initialize() {
-    },
+    async initialize() {
+      const { uuid, type } = this
+      
+      this.color = randomColor.getColor()
 
+      const options = {
+        method: 'GET',
+        url: `http://localhost:8080/metrics/${uuid}/${type}`,
+        json: true
+      }
+
+      try {
+        const result = await request(options)
+
+        const labels = []
+        const data = []
+
+        if (Array.isArray(result)) {
+          result.forEach(metric => {
+            labels.push(moment(metric.createdAt).format('HH:mm:ss'))
+            data.push(metric.value)
+          })
+        }
+
+        this.datacollection = {
+          labels,
+          datasets: [{
+            backgroundColor: this.color,
+            label: type,
+            data,
+          }]
+        }
+
+        this.startRealtime()
+
+      } catch (e) {
+        this.error = e.error.error
+        return
+      }
+    },
+    startRealtime () {
+      const { type, uuid, socket } = this
+
+      socket.on('agent/message', payload => {
+        if (payload.agent.uuid === uuid) {
+          const metric = payload.metrics.find(m => m.type === type)
+
+          const labels = this.datacollection.labels
+          const data = this.datacollection.datasets[0].data
+
+          const length = labels.length || data.length
+
+          if (length >= 20) {
+            labels.shift()
+            data.shift()
+          }
+
+          labels.push(moment(metric.createdAt).format('HH:mm:ss'))
+          data.push(metric.value)
+
+          this.datacollection = {
+            labels,
+            datasets: [{
+              backgroundColor: this.color,
+              label: type,
+              data,
+            }]
+          }
+        }
+      })
+    },
     handleError (err) {
       this.error = err.message
     }
