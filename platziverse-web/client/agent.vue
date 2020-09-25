@@ -12,6 +12,7 @@
           v-for="metric in metrics"
           v-bind:type="metric.type"
           v-bind:key="metric.type"
+          :socket="socket"
         ></metric>
       </div>
     </div>
@@ -73,15 +74,17 @@
 </style>
 
 <script>
+const request = require('request-promise-native')
 
 module.exports = {
-  props: [ 'uuid' ],
+  props: [ 'uuid', 'socket' ],
 
   data() {
     return {
       name: null,
       hostname: null,
       connected: false,
+      pid: null,
       showMetrics: false,
       error: null,
       metrics: []
@@ -93,9 +96,46 @@ module.exports = {
   },
 
   methods: {
-    initialize() {
-    },
+    async initialize() {
+      const { uuid } = this
 
+      const options = {
+        method: 'GET',
+        url: `http://localhost:8080/agents/${uuid}`,
+        json: true
+      }
+
+      try {
+        const agent = await request(options)
+
+        this.name = agent.name
+        this.hostname = agent.hostname
+        this.connected = agent.connected
+        this.pid = agent.pid
+        this.pid = agent.pid
+
+        this.loadMetrics()
+      } catch (e) {
+        this.error = e.error.error
+      }
+    },
+    async loadMetrics () {
+      const { uuid } = this
+
+      const options = {
+        method: 'GET',
+        url: `http://localhost:8080/metrics/${uuid}/`,
+        json: true
+      }
+
+      try {
+        const metrics = await request(options)
+
+        this.metrics = metrics
+      } catch (e) {
+        this.error = e.error.error
+      }
+    },
     toggleMetrics() {
       this.showMetrics = this.showMetrics ? false : true
     }

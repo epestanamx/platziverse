@@ -85,8 +85,8 @@ module.exports = {
         this.startRealtime()
 
       } catch (e) {
+        console.log(e)
         this.error = e.error.error
-        return
       }
     },
     startRealtime () {

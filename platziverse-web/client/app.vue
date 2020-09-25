@@ -1,10 +1,11 @@
 <template>
   <div>
-    <metric uuid="ea7fe245-f79a-4196-b5ba-0ed2a42b0ce1" type="promiseMetric" :socket="socket"/>
     <agent
       v-for="agent in agents"
       :uuid="agent.uuid"
+      :socket="socket"
       :key="agent.uuid">
+    </agent>
     </agent>
     <p v-if="error">{{error}}</p>
   </div>
@@ -19,8 +20,10 @@
 </style>
 
 <script>
+const request = require('request-promise-native')
 const io = require('socket.io-client')
 const socket = io()
+
 module.exports = {
   data () {
     return {
@@ -35,7 +38,20 @@ module.exports = {
   },
 
   methods: {
-    initialize () {
+    async initialize () {
+      const options = {
+        method: 'GET',
+        url: 'http://localhost:8080/agents',
+        json: true
+      }
+
+      try {
+        const agents = await request(options)
+        this.agents = agents
+
+      } catch (e) {
+        this.error = e.error.error
+      }
     }
   }
 }
