@@ -12,7 +12,7 @@ const screen = blessed.screen()
 const agents = new Map()
 const agentMetrics = new Map()
 let extended = []
-let selected = {
+const selected = {
   uuid: null,
   type: null
 }
@@ -83,7 +83,7 @@ agent.on('agent/message', payload => {
     metrics[type].push({
       value,
       timestamp: moment(timestamp).format('HH:mm:ss')
-    });
+    })
   })
 
   renderData()
@@ -93,8 +93,8 @@ function renderData () {
   const treeData = {}
 
   for (const [uuid, agent] of agents) {
-    const title = `${agent.name} - (${agent.pid})`;
-    
+    const title = `${agent.name} - (${agent.pid})`
+
     treeData[title] = {
       uuid,
       agent: true,
@@ -103,7 +103,7 @@ function renderData () {
     }
 
     const metrics = agentMetrics.get(uuid)
-    
+
     Object.keys(metrics).forEach(type => {
       const metric = {
         uuid,
